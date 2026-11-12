@@ -494,6 +494,15 @@ async function wipeAll(){if(window.RRSYNC){try{await RRSYNC.wipeAll()}catch(e){t
 ls.clear();if(window.RRSYNC)RRSYNC.logout();role=undefined;C=CF.f;lives=3;lv=0;RL=0;BI=0;BD=0;BLAST='';GP=[];lastCap=0;vol();document.documentElement.classList.remove('n');document.body.className='';toast('Todo reiniciado');go(login)}
 async function refreshView(){if(!CUR||busy||BB||document.querySelector('.modal'))return;const a=document.activeElement;if(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName))return;const q='#bkp,#gl,#cv,#tv,#tgr',sc=document.querySelector(q),top=sc?sc.scrollTop:0,f=CUR;await f();const s2=document.querySelector(q);if(s2)s2.scrollTop=top}
 if(window.RRSYNC){RRSYNC.onChange=refreshView;RRSYNC.onLost=()=>{delete ls.role;role=undefined;login()}}
+async function loadPrivateImage(img, name) {
+  if (!img || !window.RRSYNC || !RRSYNC.getPrivateImage) return;
+
+  try {
+    img.src = await RRSYNC.getPrivateImage('historia/' + name);
+  } catch (e) {
+    img.outerHTML = '<div style="font-size:80px">🌫️</div>';
+  }
+}
 function modal(h){const m=document.createElement('div');m.className='modal';m.innerHTML=`<div class=card>${h}<button>Cerrar</button></div>`;m.querySelector('button').onclick=()=>m.remove();document.body.append(m)}
 function login(){document.body.className='';C=CF.f;fx();A.innerHTML=`<div class=logo>Rescate<br>de recuerdos</div><div class=hero>💌</div><div class=card><p>Escribe tu clave de 8 dígitos</p><input id=k type=password inputmode=numeric maxlength=8><p id=e style="color:#d00;min-height:20px;margin:0"></p><button id=n>Entrar</button></div>`;
 $('#n').onclick=async()=>{let r;if(window.RRSYNC){$('#e').textContent='Conectando…';r=await RRSYNC.login($('#k').value);if(r===false){$('#e').textContent='Sin conexión. Inténtalo de nuevo';return}}else r=KEYS[$('#k').value];if(!r){$('#e').textContent='Clave incorrecta 💔';return}role=ls.role=r;if(window.RRSYNC)await RRSYNC.start(true);go(home)}}
@@ -518,13 +527,46 @@ kidnap(()=>say([['v',`Así que has venido… ${P} ya no te pertenece. Es m${x=='
 function intro(){const L=LV[lv];A.innerHTML=`<div class="card ti"><div class=av2>${C.h}</div><div class=hs style="justify-content:center">${hearts()}</div><div class=wl>NIVEL ${lv+1}</div><h2>${L.n}</h2><p>${L.d}</p><button id=n>¡Vamos!</button><button class=g id=hm>Volver al inicio</button></div>`;
 $('#bg').style.filter=`hue-rotate(${lv*16}deg)`;$('#n').onclick=()=>go(()=>{S=[];LS=lives;document.body.classList.add('play');A.innerHTML='';L.r()});$('#hm').onclick=()=>confirmBox('¿Volver al inicio? Perderás el avance de esta partida (el checkpoint, si ya lo alcanzaste, se conserva).',()=>{ach('hm');go(menu)})}
 function fin(ok){if(!S)return;S.forEach(f=>f());S=0;document.body.classList.remove('play');try{ok?SND.win():SND.lose()}catch(e){}if(ok)lvDone();setTimeout(()=>go(ok?win:lose),450)}
-function win(){if(lv==5)return end();const p=Math.round((lv+1)*100/6);
-A.innerHTML=`<div class=card><b>🧩 Recuerdo recuperado: ${p}%</b><div class=bar><i style="width:${p}%"></i></div><div class=pol><img src="assets/recuerdo${lv+1}.jpg" onerror="this.outerHTML='<div style=font-size:80px>🌫️</div>'"></div><button id=n>Continuar</button></div>`;
-$('#n').onclick=()=>say([['h',MEM()[lv]],...(lv==2?[['n','🏁 Checkpoint guardado. Si caes, volverás desde el nivel 4.']]:[])],()=>{if(lv==2)ls['cp'+role]=3;lv++;intro()})}
+function win(){
+  if(lv==5)return end();
+  const p=Math.round((lv+1)*100/6);
+
+  A.innerHTML=`<div class=card><b>🧩 Recuerdo recuperado: ${p}%</b><div class=bar><i style="width:${p}%"></i></div><div class=pol><img id=private-memory><div id=memory-loading>🌫️</div></div><button id=n>Continuar</button></div>`;
+
+  const img=$('#private-memory');
+  const loading=$('#memory-loading');
+
+  loadPrivateImage(img,'recuerdo'+(lv+1)+'.jpg')
+    .then(()=>{if(img.src)loading.remove()})
+    .catch(()=>{});
+
+  img.onload=()=>loading.remove();
+
+  $('#n').onclick=()=>say([['h',MEM()[lv]],...(lv==2?[['n','🏁 Checkpoint guardado. Si caes, volverás desde el nivel 4.']]:[])],()=>{if(lv==2)ls['cp'+role]=3;lv++;intro()})
+}
 function lose(){lives--;RL=1;inc('lost');ach('v1');if(lives==1)ach('v2');const x=C.x;if(lives>0)return say([['v',[`Te lo advertí… no eres lo bastante fuerte. Abandón${x=='lo'?'alo':'ala'} y deja que la oscuridad ${x} abrace.`,'¿Lo ves? Resistirse es inútil. ¿Por qué no te rindes y te unes a mí? Aquí no duele nada…'][2-lives]],['h',['Lo sé… mi cuerpo quiere huir. Pero mi corazón me lo impide. No me rendiré.','Jamás me uniré a ti. Aunque no recuerde su rostro… lucharé hasta el final.'][2-lives]],['n',`Te quedan ${lives} ${lives>1?'vidas':'vida'}.`]],intro);
 ach('v3');inc('go');ls['go'+role]=1;say([['v','Todo ocurrió tal como lo predije… No fuiste lo bastante fuerte. Ahora piérdete en la oscuridad y no vuelvas nunca más…'],['h','…']],()=>{A.innerHTML=`<div class="card ti"><div class=av2>💔</div><h2>Fin del camino</h2><p>Los recuerdos se desvanecen… pero aún puedes intentarlo.</p><button id=n>Intentar de nuevo</button><br><button class=g id=h>Volver al inicio</button></div>`;$('#h').onclick=()=>go(menu);$('#n').onclick=()=>go(()=>{lives=3;lv=+ls['cp'+role]||0;ach('ret');intro()})})}
-function end(){ls['done'+role]=1;ach('camp');if(!RL)ach('nolose');if(ls['go'+role])ach('rise');say([['v','No… ¡imposible! ¿Cómo es que lo recuerdas todo?'],['h','Porque el amor es más fuerte que cualquier oscuridad. Ya no me quitarás nada.'],['n',`Los recuerdos están completos y ${PN()} vuelve a casa.`]],()=>{
-A.innerHTML=`<div class=card><b>🧩 Recuerdos: 100%</b><div class=bar><i style="width:100%"></i></div><div class=pol><img src="assets/final.jpg" onerror="this.outerHTML='<div style=font-size:80px>💞</div>'"></div><h2>¡Lo lograste!</h2><p>🔓 Galería, Libro, Tops, Cápsula y Logros están desbloqueados.</p><button id=n>Ir al inicio</button></div>`;$('#n').onclick=()=>go(menu)})}
+function end(){
+  ls['done'+role]=1;
+  ach('camp');
+  if(!RL)ach('nolose');
+  if(ls['go'+role])ach('rise');
+
+  say([
+    ['v','No… ¡imposible! ¿Cómo es que lo recuerdas todo?'],
+    ['h','Porque el amor es más fuerte que cualquier oscuridad. Ya no me quitarás nada.'],
+    ['n',`Los recuerdos están completos y ${PN()} vuelve a casa.`]
+  ],()=>{
+    A.innerHTML=`<div class=card><b>🧩 Recuerdos: 100%</b><div class=bar><i style="width:100%"></i></div><div class=pol><img id=private-final><div id=final-loading>🌫️</div></div><h2>¡Lo lograste!</h2><p>🔓 Galería, Libro, Tops, Cápsula y Logros están desbloqueados.</p><button id=n>Ir al inicio</button></div>`;
+
+    const img=$('#private-final');
+    const loading=$('#final-loading');
+
+    loadPrivateImage(img,'final.jpg').then(()=>loading.remove());
+
+    $('#n').onclick=()=>go(menu);
+  })
+}
 function clk(s,f){let t=s;LT=s;const u=()=>{$('#t').textContent=`⏱ ${t/60|0}:${String(t%60).padStart(2,'0')}`};u();const id=setInterval(()=>{if(PZ)return;t--;LT=t;u();if(t<=0)f()},1000);S.push(()=>clearInterval(id))}
 const mk=(w,h)=>{const c=document.createElement('canvas');c.width=w;c.height=h;A.append(c);return c};
 const pt=(e,c)=>{const b=c.getBoundingClientRect();return[(e.clientX-b.left)*c.width/b.width,(e.clientY-b.top)*c.height/b.height]};
