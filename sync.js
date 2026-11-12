@@ -114,12 +114,64 @@ RR.start=function(first){if(!SS)return Promise.resolve();
 RR.stop=()=>{clearInterval(timer);timer=null};
 RR.hasSession=()=>!!SS;
 RR.logout=()=>{SS=null;saveS();RR.stop()};
-RR.login=async function(key){let net=false;
- for(const r of ['m','f']){try{
-  const res=await fetch(C.url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:C.key,'Content-Type':'application/json'},body:JSON.stringify({email:C.users[r],password:key})});
-  if(res.ok){const j=await res.json();SS={tok:j.access_token,ref:j.refresh_token,exp:Date.now()+(j.expires_in||3600)*1000};saveS();return r}
- }catch(e){net=true}}
- return net?false:null};
+
+RR.login=async function(key){
+  try {
+    // Validar la clave independiente en Supabase
+    const res = await fetch(C.url + '/functions/v1/validar-clave', {
+      method: 'POST',
+      headers: {
+        apikey: C.key,
+        Authorization: 'Bearer ' + C.key,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ clave: key })
+    });
+
+    if (!res.ok) {
+      if (res.status >= 500) return false;
+      return null;
+    }
+
+    const data = await res.json();
+
+    if (!data.token_hash || !data.email) return null;
+
+    // Intercambiar el token por una sesión de Supabase
+    const auth = await fetch(C.url + '/auth/v1/verify', {
+      method: 'POST',
+      headers: {
+        apikey: C.key,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        token_hash: data.token_hash,
+        type: 'magiclink'
+      })
+    });
+
+    if (!auth.ok) return null;
+
+    const j = await auth.json();
+
+    if (!j.access_token || !j.refresh_token) return null;
+
+    SS = {
+      tok: j.access_token,
+      ref: j.refresh_token,
+      exp: Date.now() + (j.expires_in || 3600) * 1000
+    };
+
+    saveS();
+
+    return data.email === C.users.m ? 'm' :
+           data.email === C.users.f ? 'f' : null;
+
+  } catch (e) {
+    return false;
+  }
+};
+
 RR.wipeAll=async function(){const rows=await api('GET','kv?select=key&key=like.ph:*&limit=5000');await rmImg(rows.map(r=>r.key.slice(3)+'.jpg'));await api('POST','rpc/wipe_all',{});M.dirty={};M.base={};M.up=[];M.since=0;saveM()};
 
 /* ---------- fotos: la galería usa IndexedDB para las imágenes y la nube para compartirlas ---------- */
