@@ -150,11 +150,7 @@ RR.login=async function(key){
       })
     });
 
-    if (!auth.ok) {
-  const errorData = await auth.json();
-  console.error("ERROR AL INICIAR SESIÓN:", auth.status, errorData);
-  return null;
-}
+   if (!auth.ok) return null;
 
     const j = await auth.json();
 
