@@ -169,7 +169,7 @@ const MEM=()=>[
 'Vi una sonrisa, un lugar… No recuerdo de quién es, pero mi corazón se aceleró.',
 'Hay alguien… su risa me suena familiar. Casi puedo oír su voz diciendo mi nombre.',
 'Ya sé que es alguien a quien amo con todo mi ser, aunque su rostro sigue borroso.',
-`Casi puedo verl${C.x}: los abrazos, las charlas, los planes… Falta muy poco.`];
+`Casi puedo verlo, los abrazos, las charlas, los planes… Falta muy poco.`];
 const hearts=()=>[0,1,2].map(i=>`<svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z" fill="${i<lives?'#ff2d55':'none'}" stroke="#000" stroke-width="2" stroke-linejoin="round"/></svg>`).join('');
 const H=()=>`<div class=hud><div class=pl><span class=av>${C.h}</span><div class=hs>${hearts()}</div></div><span>NIVEL ${lv+1}</span><b id=t class=tm></b><button class=gr onclick="gear()">⚙️</button></div>`;
 const CAPS={};
