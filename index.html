@@ -360,10 +360,10 @@ A.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{GT=b.dataset.t;A.qu
 $('#gb').onclick=()=>go(menu);$('#gc').onclick=()=>go(()=>galCompact());$('#up').onclick=()=>$('#fi').click();$('#fi').onchange=e=>upl([...e.target.files]);$('#gl').onclick=gclick;drawG();if(fid){const c=document.querySelector('.ph[data-id="'+fid+'"]');if(c){c.scrollIntoView({block:'start'});c.classList.add('hl')}}}
 function drawG(){const gl=$('#gl'),top=gl.scrollTop,N=NMS(),tn={m:N.m,b:'Ambos',f:N.f},L=GP.filter(p=>p.cat==GT);
 gl.innerHTML=L.length?L.map(p=>{const my=p.rx[role],cnt=e=>Object.values(p.rx).filter(v=>v==e).length,ot=Object.entries(p.rx).filter(([k,v])=>!RX.includes(v)),rb=e=>`<button class="${my==e?'on':''}" data-a=rx data-e="${e}">${e}<small>${cnt(e)||''}</small></button>`,xo=my&&!RX.includes(my);
-return `<div class="card ph" data-id="${p.id}"><div class=pt><div><b>${esc(tn[p.cat])}</b><small>Subida por ${esc(N[p.by]||'?')}</small></div>${p.by==role?'<button class=dl data-a=del>🗑️</button>':''}</div><img decoding=async src="${p.img}" data-a=img><div class=rb>${rb(RX[0])}${rb(RX[1])}${rb(RX[2])}<button data-a=mr class="${xo?'on':''}">${xo?my:'➕'}</button><button data-a=cm>💬<small>${p.cm.length||''}</small></button></div>${ot.length?`<div class=rs>${ot.map(([k,v])=>`${v} ${esc(N[k]||'?')}`).join(' · ')}</div>`:''}</div>`}).join(''):'<div class=card>Aún no hay fotos aquí 📸<br><small>Toca “Subir foto” para agregar la primera.</small></div>';gl.scrollTop=top}
+return `<div class="card ph" data-id="${p.id}"><div class=pt><div><b>${esc(tn[p.cat])}</b><small>Subida por ${esc(N[p.by]||'?')}</small></div>${p.by==role?'<button class=dl data-a=del>🗑️</button>':''}</div><img src="${p.img}" data-a=img><div class=rb>${rb(RX[0])}${rb(RX[1])}${rb(RX[2])}<button data-a=mr class="${xo?'on':''}">${xo?my:'➕'}</button><button data-a=cm>💬<small>${p.cm.length||''}</small></button></div>${ot.length?`<div class=rs>${ot.map(([k,v])=>`${v} ${esc(N[k]||'?')}`).join(' · ')}</div>`:''}</div>`}).join(''):'<div class=card>Aún no hay fotos aquí 📸<br><small>Toca “Subir foto” para agregar la primera.</small></div>';gl.scrollTop=top}
 function gclick(e){const b=e.target.closest('[data-a]');if(!b)return;const c=b.closest('.ph'),p=c&&GP.find(x=>x.id==c.dataset.id),a=b.dataset.a;if(!p)return;
 if(a=='rx')react(p,b.dataset.e);else if(a=='mr')moreR(p);else if(a=='cm')comments(p);
-else if(a=='img'){const m=document.createElement('div');m.className='modal';m.innerHTML=`<img decoding=async src="${p.img}" style="width:100%;border-radius:14px">`;m.onclick=()=>m.remove();document.body.append(m)}
+else if(a=='img'){const m=document.createElement('div');m.className='modal';m.innerHTML=`<img src="${p.img}" style="width:100%;border-radius:14px">`;m.onclick=()=>m.remove();document.body.append(m)}
 else if(a=='del'&&p.by==role)confirmBox('¿Borrar esta foto? No se puede deshacer.',async()=>{await DB.del(p.id);GP=GP.filter(x=>x.id!=p.id);drawG()},'Sí, borrar')}
 async function react(p,e){if(p.rx[role]==e)delete p.rx[role];else{p.rx[role]=e;inc('rx');notify('gal')}await DB.put(p);drawG()}
 function moreR(p){const m=document.createElement('div');m.className='modal';m.innerHTML=`<div class=card><h3>Más reacciones</h3><div class=eg>${MR.map(e=>`<button>${e}</button>`).join('')}</div><button class=g>Cerrar</button></div>`;m.querySelectorAll('.eg button').forEach(b=>b.onclick=()=>{m.remove();react(p,b.textContent)});m.querySelector('.card>button').onclick=()=>m.remove();document.body.append(m)}
@@ -385,7 +385,7 @@ A.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>go(()=>viewTop(b.dataset
 async function editTop(c){const N=NMS(),P=(await DB.all()).filter(p=>p.cat==c).sort((a,b)=>b.t-a.t),T=TPG(),lim=c=='b'?5:10,name=c=='b'?'Ambos':c=='m'?N.m:N.f;
 if(!P.length){A.innerHTML=`<div class=card><h3>Aún no hay fotos en “${esc(name)}”</h3><p>Súbanlas primero en la Galería.</p><button class=g id=tb>Volver</button></div>`;$('#tb').onclick=()=>go(tops);return}
 let sel=((c=='b'?(T.b||{})[role]:(T[c]||{}).ids)||[]).filter(i=>P.some(p=>p.id==i)).slice(0,lim);
-A.innerHTML=`<div class=card style="padding:10px"><h3 style="margin:0">${c=='b'?'Elige 5 fotos para el Top de los dos':'Arma el Top de '+esc(name)}</h3><small>${c=='b'?'Toca tus 5 favoritas.':'Toca en orden: la primera que toques será el #1.'}</small><div class=cnt id=tc style="font-size:20px;color:#e0447f;text-shadow:none"></div></div><div id=tgr>${P.map(p=>`<div class=ti2 data-i="${p.id}"><img decoding=async src="${p.img}"><b></b></div>`).join('')}</div><div style="display:flex;gap:6px"><button id=sv>Guardar</button><button class=g id=cn>Cancelar</button></div>`;
+A.innerHTML=`<div class=card style="padding:10px"><h3 style="margin:0">${c=='b'?'Elige 5 fotos para el Top de los dos':'Arma el Top de '+esc(name)}</h3><small>${c=='b'?'Toca tus 5 favoritas.':'Toca en orden: la primera que toques será el #1.'}</small><div class=cnt id=tc style="font-size:20px;color:#e0447f;text-shadow:none"></div></div><div id=tgr>${P.map(p=>`<div class=ti2 data-i="${p.id}"><img src="${p.img}"><b></b></div>`).join('')}</div><div style="display:flex;gap:6px"><button id=sv>Guardar</button><button class=g id=cn>Cancelar</button></div>`;
 const gr=()=>{$('#tgr').querySelectorAll('.ti2').forEach(d=>{const k=sel.indexOf(d.dataset.i);d.classList.toggle('on',k>=0);d.querySelector('b').textContent=c=='b'?'✔':k+1});$('#tc').textContent=`${sel.length}/${lim}`};gr();
 $('#tgr').onclick=e=>{const d=e.target.closest('.ti2');if(!d)return;const i=d.dataset.i,k=sel.indexOf(i);if(k>=0)sel.splice(k,1);else if(sel.length<lim)sel.push(i);else toast('Máximo '+lim);gr()};
 $('#cn').onclick=()=>go(tops);
@@ -396,11 +396,11 @@ async function viewTop(c){CUR=()=>viewTop(c);const N=NMS(),P=await DB.all(),T=TP
 if(c=='b'){const v=T.b||{},both=(v.m||[]).length&&(v.f||[]).length;['m','f'].forEach(r=>(v[r]||[]).forEach(i=>{if(both&&by(i))tally[i]=(tally[i]||0)+1}));L=Object.keys(tally).map(i=>by(i)).sort((a,b)=>tally[b.id]-tally[a.id]||Object.keys(b.rx).length-Object.keys(a.rx).length||a.t-b.t).slice(0,10);note=both?'Votaron los dos 💕':(v[role]||[]).length?'⏳ Esperando el voto de '+esc(N[role=='f'?'m':'f'])+'. ¡Recuérdale votar para descubrir el Top! 💌':'🔒 Aún no has votado. ¡Vota para poder descubrir el Top!'}
 else{L=((T[c]||{}).ids||[]).map(i=>by(i)).filter(Boolean).slice(0,10);note=L.length?'Armado por '+esc(N[MK[c]]):'Todavía no está armado'}
 const name=c=='b'?'los dos':c=='m'?N.m:N.f,RH=130,H=7*RH,vt=p=>c=='b'&&p?` · ${tally[p.id]}🗳️`:'',
-slot=(i,cl)=>{const p=L[i];return `<div class="pod ${cl}"><div class=pi>${p?`<img decoding=async src="${p.img}" data-z="${p.id}">`:'?'}</div><div class=pb>${['🥇','🥈','🥉'][i]}<br>${i+1}${vt(p)}</div></div>`};
+slot=(i,cl)=>{const p=L[i];return `<div class="pod ${cl}"><div class=pi>${p?`<img src="${p.img}" data-z="${p.id}">`:'?'}</div><div class=pb>${['🥇','🥈','🥉'][i]}<br>${i+1}${vt(p)}</div></div>`};
 let d='M50 0',px=50,py=0,items='';
-for(let i=3;i<10;i++){const r=i-3,x=r%2?72:28,y=r*RH+RH/2,p=L[i];d+=` C${px} ${py+RH/2},${x} ${y-RH/2},${x} ${y}`;px=x;py=y;items+=`<div class=pn style="left:${x}%;top:${y}px">${p?`<img decoding=async src="${p.img}" data-z="${p.id}">`:'<span>?</span>'}<b>#${i+1}${vt(p)}</b></div>`}
+for(let i=3;i<10;i++){const r=i-3,x=r%2?72:28,y=r*RH+RH/2,p=L[i];d+=` C${px} ${py+RH/2},${x} ${y-RH/2},${x} ${y}`;px=x;py=y;items+=`<div class=pn style="left:${x}%;top:${y}px">${p?`<img src="${p.img}" data-z="${p.id}">`:'<span>?</span>'}<b>#${i+1}${vt(p)}</b></div>`}
 A.innerHTML=`<div class=card style="padding:10px"><h2 style="margin:0">Top de ${esc(name)}</h2><small>${note}</small></div><div id=tv><div class=podium>${slot(1,'p2')}${slot(0,'p1')}${slot(2,'p3')}</div><div class=road style="height:${H}px"><svg class=pth viewBox="0 0 100 ${H}" preserveAspectRatio="none"><path d="${d}" fill=none style="stroke:var(--d)" stroke-width=5 stroke-linecap=round stroke-dasharray="1 11" vector-effect="non-scaling-stroke"/></svg>${items}</div></div>${c=='b'&&!(T.b||{})[role]?'<button id=tvv>Votar ahora</button>':''}<button class=g id=tb>Volver</button>`;
-$('#tv').onclick=e=>{const z=e.target.closest('[data-z]');if(!z)return;const p=by(z.dataset.z);if(p){const m=document.createElement('div');m.className='modal';m.innerHTML=`<img decoding=async src="${p.img}" style="width:100%;border-radius:14px">`;m.onclick=()=>m.remove();document.body.append(m)}};$('#tb').onclick=()=>go(tops);const vb=$('#tvv');if(vb)vb.onclick=()=>go(()=>editTop('b'))}
+$('#tv').onclick=e=>{const z=e.target.closest('[data-z]');if(!z)return;const p=by(z.dataset.z);if(p){const m=document.createElement('div');m.className='modal';m.innerHTML=`<img src="${p.img}" style="width:100%;border-radius:14px">`;m.onclick=()=>m.remove();document.body.append(m)}};$('#tb').onclick=()=>go(tops);const vb=$('#tvv');if(vb)vb.onclick=()=>go(()=>editTop('b'))}
 const NOW=()=>Date.now()+(+ls.toff||0);
 const CPG=()=>JSON.parse(ls.cap||'[]'),CPS=a=>ls.cap=JSON.stringify(a);
 const capReady=()=>CPG().filter(m=>m.to==role&&m.at<=NOW()&&!m.rd).length;
@@ -429,7 +429,7 @@ $('#cc').onclick=()=>go(capsula);
 $('#cs').onclick=()=>{const txt=$('#ct').value.trim(),at=new Date($('#cd').value).getTime();if(!txt)return toast('Escribe un mensaje');if(!at||at<NOW()+7*864e5-6e4)return toast('La fecha debe ser dentro de 7 días o más');
 const L=CPG();if(usedM(L)>=3)return toast('Ya usaste tus 3 mensajes de este mes');L.push({id:NOW()+'-'+Math.random().toString(36).slice(2,6),by:role,to:o,txt,at,t:NOW(),rd:0});CPS(L);notify('cap');ach('c1');if(usedM(L)>=3)ach('c3');toast('Guardado en la cápsula ⏳');go(capsula)}}
 async function galCompact(pg=0){const P=(await DB.all()).sort((a,b)=>b.t-a.t),pages=Math.max(1,Math.ceil(P.length/12));pg=Math.min(Math.max(pg,0),pages-1);const L=P.slice(pg*12,pg*12+12);
-A.innerHTML=`<div class=card style="padding:8px"><b>Compacto</b> <small>${P.length} fotos · pág. ${pg+1}/${pages}</small></div><div class=cg>${Array.from({length:12},(_,i)=>L[i]?`<div class=ci2 data-z="${L[i].id}"><img decoding=async src="${L[i].img}"></div>`:'<div class=ci2></div>').join('')}</div><div class=gbar style="width:min(100%,360px)"><button class=g id=pv>◀</button><button class=g id=bk3>Volver</button><button class=g id=nx>▶</button></div>`;
+A.innerHTML=`<div class=card style="padding:8px"><b>Compacto</b> <small>${P.length} fotos · pág. ${pg+1}/${pages}</small></div><div class=cg>${Array.from({length:12},(_,i)=>L[i]?`<div class=ci2 data-z="${L[i].id}"><img src="${L[i].img}"></div>`:'<div class=ci2></div>').join('')}</div><div class=gbar style="width:min(100%,360px)"><button class=g id=pv>◀</button><button class=g id=bk3>Volver</button><button class=g id=nx>▶</button></div>`;
 $('#pv').onclick=()=>galCompact(pg-1);$('#nx').onclick=()=>galCompact(pg+1);$('#bk3').onclick=()=>go(galeria);
 document.querySelector('.cg').onclick=e=>{const z=e.target.closest('[data-z]');if(z)go(()=>galeria(z.dataset.z))}}
 function platino(){const N=NMS(),o=role=='f'?'m':'f',fr=esc(N[o]),to=esc(N[role]),f=role=='f';
@@ -452,7 +452,7 @@ const BKG=()=>JSON.parse(ls.book||'{}'),BKS=o=>ls.book=JSON.stringify(o),MES=['E
 function bpg(o,i){return o[i]||(o[i]={im:{},d:{},pos:{m:['','',''],f:['','','']},neg:{m:['','',''],f:['','','']},rt:{}})}
 let BI=0,BD=0;
 function chkBook(){const B=BKG();let n=0;BK.forEach((_,i)=>{const g=B[i];if(g&&g.im.m&&g.im.f&&bdt(g)&&g.rt.m&&g.rt.f)n++});[[1,'b1'],[10,'b10'],[44,'b40'],[BK.length,'b80']].forEach(([k,id])=>{if(n>=k)ach(id)});return n}
-function zoomImg(src){const m=document.createElement('div');m.className='modal';m.innerHTML=`<img decoding=async src="${src}" style="width:100%;border-radius:14px">`;m.onclick=()=>m.remove();document.body.append(m)}
+function zoomImg(src){const m=document.createElement('div');m.className='modal';m.innerHTML=`<img src="${src}" style="width:100%;border-radius:14px">`;m.onclick=()=>m.remove();document.body.append(m)}
 const HP='M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z';
 const bheart=(f,id,c=['#ff2d55','#c2185b'])=>`<svg viewBox="0 0 24 24" width="30" height="30"><defs><clipPath id="${id}"><rect width="${f*24}" height="24"/></clipPath></defs><path d="${HP}" fill="${c[0]}" clip-path="url(#${id})"/><path d="${HP}" fill="none" stroke="${c[1]}" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
 const bdt=g=>g.dt||(g.d&&g.d.d&&g.d.m&&g.d.y?`${g.d.y}-${String(g.d.m).padStart(2,'0')}-${String(g.d.d).padStart(2,'0')}`:'');
@@ -462,7 +462,7 @@ const HC={m:['#4db8f0','#1b6fa8'],f:['#ff6fa5','#c2185b']};
 let BLAST='',BB=0;
 async function libro(i){CUR=()=>libro();seen('book');document.body.classList.remove('play');const pv=BI;if(i!=null)BI=Math.min(Math.max(i,0),BK.length-1);if(BI==pv)BD=0;
 const N=NMS(),B=BKG(),pg=bpg(B,BI);pg.fe=pg.fe||{m:[null,null,null],f:[null,null,null]};const P=await DB.all(),ph=id=>P.find(p=>p.id==id),dt=bdt(pg);
-const slot=r=>{const p=ph(pg.im[r]),me=role==r;return `<div class="bph ${r=='m'?'l':'r'}" data-s="${r}">${p?`<img decoding=async src="${p.img}">`:me?'<div class=plus>＋</div>':'<div class=em></div>'}<span class=cap>${esc(N[r])}</span></div>`},
+const slot=r=>{const p=ph(pg.im[r]),me=role==r;return `<div class="bph ${r=='m'?'l':'r'}" data-s="${r}">${p?`<img src="${p.img}">`:me?'<div class=plus>＋</div>':'<div class=em></div>'}<span class=cap>${esc(N[r])}</span></div>`},
 hearts=r=>{const v=+pg.rt[r]||0;return `<div class=hc><div class=hr data-r="${r}">${[0,1,2,3,4].map(k=>bheart(Math.max(0,Math.min(1,v-k)),'c'+BI+r+k,HC[r])).join('')}</div></div>`},
 fr=(r,k)=>{const f=pg.fe[r][k],me=role==r;return `<div class="fr ${r}">${f?`<span class="fw ${r}${f.k=='n'?' ng':''}" ${me?`data-f="${r}:${k}"`:''}>${esc(f.t)}</span>`:me?`<button class="pls ${r}" data-f="${r}:${k}">＋</button>`:''}</div>`};
 const nch=pg.ch?(pg.ch.m?1:0)+(pg.ch.f?1:0):0,chb=`<button class=cb2 data-ch=1><svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H10l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>${nch?`<i>${nch}</i>`:''}</button>`;
@@ -497,7 +497,7 @@ const s=m.querySelector('#chs');if(s)s.onclick=()=>{const t=m.querySelector('#ch
 m.querySelector('#chc').onclick=()=>{m.remove();libro()}};
 draw();document.body.append(m)}
 function pickBook(r){DB.all().then(P=>{P=P.sort((a,b)=>b.t-a.t);const cur=bpg(BKG(),BI).im[r],m=document.createElement('div');m.className='modal';
-m.innerHTML=`<div class="card bkf" style="max-height:88vh;display:flex;flex-direction:column"><h3 style="margin:0 0 6px">Elige una foto de la galería</h3>${P.length?`<div id=tgr style="max-height:52vh">${P.map(p=>`<div class="ti2 ${p.id==cur?'on':''}" data-i="${p.id}"><img decoding=async src="${p.img}"></div>`).join('')}</div>`:'<p>Aún no hay fotos en la galería 📸<br>Súbelas primero allí.</p>'}<div style="margin-top:8px">${cur?'<button class=g id=bq>Quitar foto</button>':''}<button class=g id=bc>Cancelar</button></div></div>`;
+m.innerHTML=`<div class="card bkf" style="max-height:88vh;display:flex;flex-direction:column"><h3 style="margin:0 0 6px">Elige una foto de la galería</h3>${P.length?`<div id=tgr style="max-height:52vh">${P.map(p=>`<div class="ti2 ${p.id==cur?'on':''}" data-i="${p.id}"><img src="${p.img}"></div>`).join('')}</div>`:'<p>Aún no hay fotos en la galería 📸<br>Súbelas primero allí.</p>'}<div style="margin-top:8px">${cur?'<button class=g id=bq>Quitar foto</button>':''}<button class=g id=bc>Cancelar</button></div></div>`;
 const set=id=>{const B=BKG(),g=bpg(B,BI);if(id)g.im[r]=id;else delete g.im[r];BKS(B);notify('book');chkBook();m.remove();libro()};
 const t=m.querySelector('#tgr');if(t)t.onclick=e=>{const d=e.target.closest('.ti2');if(d)set(d.dataset.i)};const q=m.querySelector('#bq');if(q)q.onclick=()=>set(null);m.querySelector('#bc').onclick=()=>m.remove();document.body.append(m)})}
 function rate(r){if(role!=r)return toast('Solo '+NMS()[r]+' puede calificar aquí');const cur=+bpg(BKG(),BI).rt[r]||0,m=document.createElement('div');m.className='modal';
@@ -516,14 +516,29 @@ async function wipeAll(){if(window.RRSYNC){try{await RRSYNC.wipeAll()}catch(e){t
 ls.clear();if(window.RRSYNC)RRSYNC.logout();role=undefined;C=CF.f;lives=3;lv=0;RL=0;BI=0;BD=0;BLAST='';GP=[];lastCap=0;vol();document.documentElement.classList.remove('n');document.body.className='';toast('Todo reiniciado');go(login)}
 async function refreshView(){if(!CUR||busy||BB||document.querySelector('.modal'))return;const a=document.activeElement;if(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName))return;const q='#bkp,#gl,#cv,#tv,#tgr',sc=document.querySelector(q),top=sc?sc.scrollTop:0,f=CUR;await f();const s2=document.querySelector(q);if(s2)s2.scrollTop=top}
 if(window.RRSYNC){RRSYNC.onChange=refreshView;RRSYNC.onLost=()=>{delete ls.role;role=undefined;login()}}
+/* Devuelve '' si la imagen cargo bien, o el motivo del fallo (se muestra en pantalla y en consola). */
 async function loadPrivateImage(img, name) {
-  if (!img || !window.RRSYNC || !RRSYNC.getPrivateImage) return;
-
-  try {
-    img.src = await RRSYNC.getPrivateImage('historia/' + name);
-  } catch (e) {
-    img.outerHTML = '<div style="font-size:80px">🌫️</div>';
+  const path = 'historia/' + name;
+  let err = '';
+  for (let t = 0; t < 3; t++) {
+    try {
+      if (!window.RRSYNC || !RRSYNC.getPrivateImage) throw new Error('RRSYNC no disponible: revisa que config.js y sync.js carguen');
+      const u = await RRSYNC.getPrivateImage(path);
+      if (!u) throw new Error('Supabase no devolvió URL para ' + path);
+      await new Promise((ok, ko) => { img.onload = ok; img.onerror = () => ko(new Error('el navegador no pudo abrir la imagen ' + path)); img.src = u; });
+      return '';
+    } catch (e) {
+      err = (e && e.message) || String(e);
+      console.error('[recuerdo]', path, 'intento', t + 1, e);
+      if (t < 2) await sl(800 * (t + 1));
+    }
   }
+  return err;
+}
+function showPrivImg(img, ld, m) {
+  if (!m) { if (ld) ld.remove(); return; }
+  img.remove();
+  if (ld) ld.innerHTML = '🌫️<small style="display:block;font-size:11px;line-height:1.2;opacity:.75;word-break:break-word">' + esc(m) + '</small>';
 }
 function modal(h){const m=document.createElement('div');m.className='modal';m.innerHTML=`<div class=card>${h}<button>Cerrar</button></div>`;m.querySelector('button').onclick=()=>m.remove();document.body.append(m)}
 function login(){document.body.className='';C=CF.f;fx();A.innerHTML=`<div class=logo>Rescate<br>de recuerdos</div><div class=hero>💌</div><div class=card><p>Escribe tu clave de 8 dígitos</p><input id=k type=password inputmode=numeric maxlength=8><p id=e style="color:#d00;min-height:20px;margin:0"></p><button id=n>Entrar</button></div>`;
@@ -553,16 +568,12 @@ function win(){
   if(lv==5)return end();
   const p=Math.round((lv+1)*100/6);
 
-  A.innerHTML=`<div class=card><b>🧩 Recuerdo recuperado: ${p}%</b><div class=bar><i style="width:${p}%"></i></div><div class=pol><img decoding=async id=private-memory><div id=memory-loading>🌫️</div></div><button id=n>Continuar</button></div>`;
+  A.innerHTML=`<div class=card><b>🧩 Recuerdo recuperado: ${p}%</b><div class=bar><i style="width:${p}%"></i></div><div class=pol><img id=private-memory><div id=memory-loading>🌫️</div></div><button id=n>Continuar</button></div>`;
 
   const img=$('#private-memory');
   const loading=$('#memory-loading');
 
-  loadPrivateImage(img,'recuerdo'+(lv+1)+'.jpg')
-    .then(()=>{if(img.src)loading.remove()})
-    .catch(()=>{});
-
-  img.onload=()=>loading.remove();
+  loadPrivateImage(img,'recuerdo'+(lv+1)+'.jpg').then(m=>showPrivImg(img,loading,m));
 
   $('#n').onclick=()=>say([['h',MEM()[lv]],...(lv==2?[['n','🏁 Checkpoint guardado. Si caes, volverás desde el nivel 4.']]:[])],()=>{if(lv==2)ls['cp'+role]=3;lv++;intro()})
 }
@@ -579,12 +590,12 @@ function end(){
     ['h','Porque el amor es más fuerte que cualquier oscuridad. Ya no me quitarás nada.'],
     ['n',`Los recuerdos están completos y ${PN()} vuelve a casa.`]
   ],()=>{
-    A.innerHTML=`<div class=card><b>🧩 Recuerdos: 100%</b><div class=bar><i style="width:100%"></i></div><div class=pol><img decoding=async id=private-final><div id=final-loading>🌫️</div></div><h2>¡Lo lograste!</h2><p>🔓 Galería, Libro, Tops, Cápsula y Logros están desbloqueados.</p><button id=n>Ir al inicio</button></div>`;
+    A.innerHTML=`<div class=card><b>🧩 Recuerdos: 100%</b><div class=bar><i style="width:100%"></i></div><div class=pol><img id=private-final><div id=final-loading>🌫️</div></div><h2>¡Lo lograste!</h2><p>🔓 Galería, Libro, Tops, Cápsula y Logros están desbloqueados.</p><button id=n>Ir al inicio</button></div>`;
 
     const img=$('#private-final');
     const loading=$('#final-loading');
 
-    loadPrivateImage(img,'final.jpg').then(()=>loading.remove());
+    loadPrivateImage(img,'final.jpg').then(m=>showPrivImg(img,loading,m));
 
     $('#n').onclick=()=>go(menu);
   })
