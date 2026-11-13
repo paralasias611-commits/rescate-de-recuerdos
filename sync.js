@@ -183,5 +183,9 @@ RR.attachDB=function(db){D=db;
  db.put=async p=>{const id=p.id,rec=await IG(id);if(!rec||!rec.img){await IP({id,img:p.img});if(!M.up.includes(id))M.up.push(id)}
   window.RRLS['ph:'+id]=JSON.stringify({id,by:p.by,cat:p.cat,t:p.t,rx:p.rx||{},cm:p.cm||[],path:id+'.jpg'});saveM()};
  db.del=async id=>{await ID(id);M.up=M.up.filter(x=>x!=id);saveM();delete window.RRLS['ph:'+id]}};
+RR.getPrivateImage = async function(path) {
+  return await toData(await dlImg(path));
+};
+
 RR._t={m3,flush,pull,pushKey,eq};
 })();
