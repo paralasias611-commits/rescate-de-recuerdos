@@ -1,5 +1,11 @@
 <!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Rescate de recuerdos</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Creepster&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Fredoka';src:url('assets/fonts/Fredoka-Medium.ttf') format('truetype');font-weight:500}
+@font-face{font-family:'Fredoka';src:url('assets/fonts/Fredoka-Bold.ttf') format('truetype');font-weight:700}
+@font-face{font-family:'Creepster';src:url('assets/fonts/Creepster-Regular.ttf') format('truetype')}
+@font-face{font-family:'Caveat';src:url('assets/fonts/Caveat-SemiBold.ttf') format('truetype');font-weight:600}
+</style>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#ff5c9d"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Recuerdos"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <style>
 :root{--g1:#ffd0e8;--g2:#b9a4ff;--c:#ff5c9d;--d:#9c1c5c;--t:#4a1030;--s:#ffe0ef;--p:#fff7fb;--tf:'Fredoka',system-ui,sans-serif;box-sizing:border-box}
 body.m{--g1:#10306b;--g2:#4b2a8f;--c:#4f8cff;--d:#0b1f55;--t:#eaf1ff;--s:#2a4690;--p:#16295e}
@@ -102,7 +108,23 @@ html.n #cl i{background:#050507;box-shadow:.45em .12em 0 #050507,-.42em .18em 0 
 #kb{opacity:0;transition:opacity 1.2s!important;width:180px;height:100px}
 #kb .sp{position:absolute;font-size:80px;top:10px;line-height:1;transition:opacity .3s}#kb .s1{left:0}#kb .s2{left:90px}
 .zz{position:absolute;top:-10px;left:90px;font-size:38px;animation:zz 2.4s infinite;opacity:0;color:#9cf;font-family:var(--tf)}.zz.b{left:40px;animation-delay:1.2s;font-size:28px;font-weight:700}
-@keyframes zz{0%{transform:translate(0,0) scale(.6);opacity:0}30%{opacity:1}100%{transform:translate(34px,-80px) scale(1.2);opacity:0}}.ops{display:flex;flex-direction:column;gap:14px;margin-top:22px;width:100%;max-width:300px}.ob{font:26px 'Creepster',cursive;letter-spacing:2px;background:transparent;color:#fff;border:2px solid #900;border-radius:8px;padding:12px;margin:0;box-shadow:0 0 16px #900a,inset 0 0 14px #9006;text-shadow:0 0 8px #f00}.ob:first-child{background:#4a0010}.ob:active{transform:none;background:#900}#ck{position:fixed;inset:0;z-index:65;background:#000;overflow:hidden;animation:fi .6s}@keyframes fi{from{opacity:0}}#ks{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:90px}#ks>div{position:absolute;transition:all .5s}#kl{opacity:0;transition:opacity 1s!important}#kv{font-size:110px;filter:brightness(0) drop-shadow(0 0 12px #f00);transform:translateX(120vw);opacity:0}#kp{font-size:180px;opacity:0;transform:scale(.3)}#kp.on{animation:pf 1s forwards}@keyframes pf{30%{opacity:1;transform:scale(1.3)}to{opacity:0;transform:scale(2.2)}}#kw{position:absolute;inset:0;background:radial-gradient(circle,#fff,#fffb 55%,#fff4);opacity:0;pointer-events:none}.shk{animation:shk .12s infinite}#kt{position:absolute;bottom:20%;width:100%;text-align:center;font:64px 'Creepster',cursive;color:#e00;text-shadow:0 0 22px #f00;opacity:0}#kt.on{opacity:1;animation:shk .1s infinite}.sl{position:absolute;left:-10%;top:45%;width:120%;height:6px;background:#fff;box-shadow:0 0 20px 6px #fff;transform:rotate(var(--r,-25deg)) scaleX(0);animation:slh .3s forwards}@keyframes slh{50%{transform:rotate(var(--r,-25deg)) scaleX(1)}to{transform:rotate(var(--r,-25deg)) scaleX(1);opacity:0}}@keyframes shk{20%{transform:translate(-6px,3px)}40%{transform:translate(6px,-3px)}60%{transform:translate(-4px,-2px)}80%{transform:translate(4px,2px)}}
+@keyframes zz{0%{transform:translate(0,0) scale(.6);opacity:0}30%{opacity:1}100%{transform:translate(34px,-80px) scale(1.2);opacity:0}}.ops{display:flex;flex-direction:column;gap:14px;margin-top:22px;width:100%;max-width:300px}.ob{font:26px 'Creepster',cursive;letter-spacing:2px;background:transparent;color:#fff;border:2px solid #900;border-radius:8px;padding:12px;margin:0;box-shadow:0 0 16px #900a,inset 0 0 14px #9006;text-shadow:0 0 8px #f00}.ob:first-child{background:#4a0010}.ob:active{transform:none;background:#900}#ck{
+  position:fixed;
+  inset:-2px 0 -2px 0;
+  z-index:65;
+  background:#000;
+  overflow:hidden;
+  animation:fi .6s;
+}@keyframes fi{from{opacity:0}}#ks{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:90px}#ks>div{position:absolute;transition:all .5s}#kl{opacity:0;transition:opacity 1s!important}#kv{font-size:110px;filter:brightness(0) drop-shadow(0 0 12px #f00);transform:translateX(120vw);opacity:0}#kp{font-size:180px;opacity:0;transform:scale(.3)}#kp.on{animation:pf 1s forwards}@keyframes pf{30%{opacity:1;transform:scale(1.3)}to{opacity:0;transform:scale(2.2)}}#kw{
+  position:absolute;
+  top:-2px;
+  left:0;
+  right:0;
+  bottom:-200px;
+  background:radial-gradient(circle,#fff,#fffb 55%,#fff4);
+  opacity:0;
+  pointer-events:none;
+}.shk{animation:shk .12s infinite}#kt{position:absolute;bottom:20%;width:100%;text-align:center;font:64px 'Creepster',cursive;color:#e00;text-shadow:0 0 22px #f00;opacity:0}#kt.on{opacity:1;animation:shk .1s infinite}.sl{position:absolute;left:-10%;top:45%;width:120%;height:6px;background:#fff;box-shadow:0 0 20px 6px #fff;transform:rotate(var(--r,-25deg)) scaleX(0);animation:slh .3s forwards}@keyframes slh{50%{transform:rotate(var(--r,-25deg)) scaleX(1)}to{transform:rotate(var(--r,-25deg)) scaleX(1);opacity:0}}@keyframes shk{20%{transform:translate(-6px,3px)}40%{transform:translate(6px,-3px)}60%{transform:translate(-4px,-2px)}80%{transform:translate(4px,2px)}}
 .md{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
 .mo{background:var(--p);color:var(--t);border:3px solid var(--d);border-radius:18px;padding:10px;font-weight:700;position:relative}.mo span{display:block;font-size:30px}
 .mo.lk{filter:grayscale(1);opacity:.65}.mo b{position:absolute;right:8px;top:6px}
@@ -129,10 +151,12 @@ html.n #cl i{background:#050507;box-shadow:.45em .12em 0 #050507,-.42em .18em 0 
 .ht{font:600 32px/1.3 'Caveat',cursive;color:#ffe9f1;text-shadow:0 0 16px #fff7;min-height:150px}
 .nt{font:italic 18px var(--tf);color:#aaa;min-height:150px}.tp{position:absolute;bottom:26px;color:#666;font-size:13px;animation:fk 2s infinite}
 </style></head><body><div id="bg"></div><div id="fx"></div><div id="a"></div>
+<script src="config.js"></script>
+<script src="sync.js"></script>
 <script>
 const $=s=>document.querySelector(s),A=$('#a'),sl=ms=>new Promise(r=>setTimeout(r,ms)),ls=window.RRLS||localStorage;
-const KEYS={'28120303':'f','11030303':'m'};
-const CF={f:{v:'🍾',vn:'El Alcohol',h:'👧',x:'lo',r:'💃',fx:['💗','✨','🌸','💖']},m:{v:'😴',vn:'El Sueño',h:'🧑',x:'la',r:'🕺',fx:['⭐','✨','🌙','💙']}};
+const KEYS={};
+const CF={f:{v:'🍾',vn:'El Alcohol',h:'✨',x:'lo',r:'💃',fx:['💗','✨','🌸','💖']},m:{v:'😴',vn:'El Sueño',h:'🌙',x:'la',r:'🕺',fx:['⭐','✨','🌙','💙']}};
 const NMS=()=>JSON.parse(ls.nm||'{"f":"Nathy","m":"Bryan"}'),NM=()=>NMS()[role],NK=()=>JSON.parse(ls.nk||'{}'),PN=()=>NK()[role]||NMS()[role=='f'?'m':'f'];
 let role=ls.role,C,lives=3,lv=0,S=0,bk,busy=0,PZ=0,LS=3,LT=0,RL=0,CUR=null;
 const LV=[
@@ -490,6 +514,15 @@ async function wipeAll(){if(window.RRSYNC){try{await RRSYNC.wipeAll()}catch(e){t
 ls.clear();if(window.RRSYNC)RRSYNC.logout();role=undefined;C=CF.f;lives=3;lv=0;RL=0;BI=0;BD=0;BLAST='';GP=[];lastCap=0;vol();document.documentElement.classList.remove('n');document.body.className='';toast('Todo reiniciado');go(login)}
 async function refreshView(){if(!CUR||busy||BB||document.querySelector('.modal'))return;const a=document.activeElement;if(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName))return;const q='#bkp,#gl,#cv,#tv,#tgr',sc=document.querySelector(q),top=sc?sc.scrollTop:0,f=CUR;await f();const s2=document.querySelector(q);if(s2)s2.scrollTop=top}
 if(window.RRSYNC){RRSYNC.onChange=refreshView;RRSYNC.onLost=()=>{delete ls.role;role=undefined;login()}}
+async function loadPrivateImage(img, name) {
+  if (!img || !window.RRSYNC || !RRSYNC.getPrivateImage) return;
+
+  try {
+    img.src = await RRSYNC.getPrivateImage('historia/' + name);
+  } catch (e) {
+    img.outerHTML = '<div style="font-size:80px">🌫️</div>';
+  }
+}
 function modal(h){const m=document.createElement('div');m.className='modal';m.innerHTML=`<div class=card>${h}<button>Cerrar</button></div>`;m.querySelector('button').onclick=()=>m.remove();document.body.append(m)}
 function login(){document.body.className='';C=CF.f;fx();A.innerHTML=`<div class=logo>Rescate<br>de recuerdos</div><div class=hero>💌</div><div class=card><p>Escribe tu clave de 8 dígitos</p><input id=k type=password inputmode=numeric maxlength=8><p id=e style="color:#d00;min-height:20px;margin:0"></p><button id=n>Entrar</button></div>`;
 $('#n').onclick=async()=>{let r;if(window.RRSYNC){$('#e').textContent='Conectando…';r=await RRSYNC.login($('#k').value);if(r===false){$('#e').textContent='Sin conexión. Inténtalo de nuevo';return}}else r=KEYS[$('#k').value];if(!r){$('#e').textContent='Clave incorrecta 💔';return}role=ls.role=r;if(window.RRSYNC)await RRSYNC.start(true);go(home)}}
@@ -514,13 +547,46 @@ kidnap(()=>say([['v',`Así que has venido… ${P} ya no te pertenece. Es m${x=='
 function intro(){const L=LV[lv];A.innerHTML=`<div class="card ti"><div class=av2>${C.h}</div><div class=hs style="justify-content:center">${hearts()}</div><div class=wl>NIVEL ${lv+1}</div><h2>${L.n}</h2><p>${L.d}</p><button id=n>¡Vamos!</button><button class=g id=hm>Volver al inicio</button></div>`;
 $('#bg').style.filter=`hue-rotate(${lv*16}deg)`;$('#n').onclick=()=>go(()=>{S=[];LS=lives;document.body.classList.add('play');A.innerHTML='';L.r()});$('#hm').onclick=()=>confirmBox('¿Volver al inicio? Perderás el avance de esta partida (el checkpoint, si ya lo alcanzaste, se conserva).',()=>{ach('hm');go(menu)})}
 function fin(ok){if(!S)return;S.forEach(f=>f());S=0;document.body.classList.remove('play');try{ok?SND.win():SND.lose()}catch(e){}if(ok)lvDone();setTimeout(()=>go(ok?win:lose),450)}
-function win(){if(lv==5)return end();const p=Math.round((lv+1)*100/6);
-A.innerHTML=`<div class=card><b>🧩 Recuerdo recuperado: ${p}%</b><div class=bar><i style="width:${p}%"></i></div><div class=pol><img src="assets/recuerdo${lv+1}.jpg" onerror="this.outerHTML='<div style=font-size:80px>🌫️</div>'"></div><button id=n>Continuar</button></div>`;
-$('#n').onclick=()=>say([['h',MEM()[lv]],...(lv==2?[['n','🏁 Checkpoint guardado. Si caes, volverás desde el nivel 4.']]:[])],()=>{if(lv==2)ls['cp'+role]=3;lv++;intro()})}
+function win(){
+  if(lv==5)return end();
+  const p=Math.round((lv+1)*100/6);
+
+  A.innerHTML=`<div class=card><b>🧩 Recuerdo recuperado: ${p}%</b><div class=bar><i style="width:${p}%"></i></div><div class=pol><img id=private-memory><div id=memory-loading>🌫️</div></div><button id=n>Continuar</button></div>`;
+
+  const img=$('#private-memory');
+  const loading=$('#memory-loading');
+
+  loadPrivateImage(img,'recuerdo'+(lv+1)+'.jpg')
+    .then(()=>{if(img.src)loading.remove()})
+    .catch(()=>{});
+
+  img.onload=()=>loading.remove();
+
+  $('#n').onclick=()=>say([['h',MEM()[lv]],...(lv==2?[['n','🏁 Checkpoint guardado. Si caes, volverás desde el nivel 4.']]:[])],()=>{if(lv==2)ls['cp'+role]=3;lv++;intro()})
+}
 function lose(){lives--;RL=1;inc('lost');ach('v1');if(lives==1)ach('v2');const x=C.x;if(lives>0)return say([['v',[`Te lo advertí… no eres lo bastante fuerte. Abandón${x=='lo'?'alo':'ala'} y deja que la oscuridad ${x} abrace.`,'¿Lo ves? Resistirse es inútil. ¿Por qué no te rindes y te unes a mí? Aquí no duele nada…'][2-lives]],['h',['Lo sé… mi cuerpo quiere huir. Pero mi corazón me lo impide. No me rendiré.','Jamás me uniré a ti. Aunque no recuerde su rostro… lucharé hasta el final.'][2-lives]],['n',`Te quedan ${lives} ${lives>1?'vidas':'vida'}.`]],intro);
 ach('v3');inc('go');ls['go'+role]=1;say([['v','Todo ocurrió tal como lo predije… No fuiste lo bastante fuerte. Ahora piérdete en la oscuridad y no vuelvas nunca más…'],['h','…']],()=>{A.innerHTML=`<div class="card ti"><div class=av2>💔</div><h2>Fin del camino</h2><p>Los recuerdos se desvanecen… pero aún puedes intentarlo.</p><button id=n>Intentar de nuevo</button><br><button class=g id=h>Volver al inicio</button></div>`;$('#h').onclick=()=>go(menu);$('#n').onclick=()=>go(()=>{lives=3;lv=+ls['cp'+role]||0;ach('ret');intro()})})}
-function end(){ls['done'+role]=1;ach('camp');if(!RL)ach('nolose');if(ls['go'+role])ach('rise');say([['v','No… ¡imposible! ¿Cómo es que lo recuerdas todo?'],['h','Porque el amor es más fuerte que cualquier oscuridad. Ya no me quitarás nada.'],['n',`Los recuerdos están completos y ${PN()} vuelve a casa.`]],()=>{
-A.innerHTML=`<div class=card><b>🧩 Recuerdos: 100%</b><div class=bar><i style="width:100%"></i></div><div class=pol><img src="assets/final.jpg" onerror="this.outerHTML='<div style=font-size:80px>💞</div>'"></div><h2>¡Lo lograste!</h2><p>🔓 Galería, Libro, Tops, Cápsula y Logros están desbloqueados.</p><button id=n>Ir al inicio</button></div>`;$('#n').onclick=()=>go(menu)})}
+function end(){
+  ls['done'+role]=1;
+  ach('camp');
+  if(!RL)ach('nolose');
+  if(ls['go'+role])ach('rise');
+
+  say([
+    ['v','No… ¡imposible! ¿Cómo es que lo recuerdas todo?'],
+    ['h','Porque el amor es más fuerte que cualquier oscuridad. Ya no me quitarás nada.'],
+    ['n',`Los recuerdos están completos y ${PN()} vuelve a casa.`]
+  ],()=>{
+    A.innerHTML=`<div class=card><b>🧩 Recuerdos: 100%</b><div class=bar><i style="width:100%"></i></div><div class=pol><img id=private-final><div id=final-loading>🌫️</div></div><h2>¡Lo lograste!</h2><p>🔓 Galería, Libro, Tops, Cápsula y Logros están desbloqueados.</p><button id=n>Ir al inicio</button></div>`;
+
+    const img=$('#private-final');
+    const loading=$('#final-loading');
+
+    loadPrivateImage(img,'final.jpg').then(()=>loading.remove());
+
+    $('#n').onclick=()=>go(menu);
+  })
+}
 function clk(s,f){let t=s;LT=s;const u=()=>{$('#t').textContent=`⏱ ${t/60|0}:${String(t%60).padStart(2,'0')}`};u();const id=setInterval(()=>{if(PZ)return;t--;LT=t;u();if(t<=0)f()},1000);S.push(()=>clearInterval(id))}
 const mk=(w,h)=>{const c=document.createElement('canvas');c.width=w;c.height=h;A.append(c);return c};
 const pt=(e,c)=>{const b=c.getBoundingClientRect();return[(e.clientX-b.left)*c.width/b.width,(e.clientY-b.top)*c.height/b.height]};
@@ -611,4 +677,4 @@ requestAnimationFrame(fr)};requestAnimationFrame(fr)}
 document.addEventListener('pointerdown',e=>{try{au().resume()}catch(_){}if(mood===null)music('h');inc('tap');if(e.target.closest&&e.target.closest('button,.mo'))SND.tap()});setInterval(sched,400);setInterval(()=>{capBadge();alrBadge()},15000);document.addEventListener('error',e=>{const i=e.target;if(!i||i.tagName!='IMG'||!/assets\//.test(i.src))return;const x=['png','jpeg','webp','JPG','PNG','JPEG'],k=+(i.dataset.k||0);if(k<x.length){i.dataset.k=k+1;e.stopImmediatePropagation();i.src=i.src.replace(/\.\w+$/,'.'+x[k])}},true);
 document.documentElement.classList.toggle('n',ls.night=='1');C=CF[role]||CF.f;if(window.RRSYNC){if(role&&!RRSYNC.hasSession()){delete ls.role;role=undefined}else if(role)RRSYNC.start()}
 role&&CF[role]?(document.body.className=role,home()):login();
-</script></body></html>
+</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>0))</script></body></html>
