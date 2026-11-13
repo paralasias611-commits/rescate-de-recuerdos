@@ -1,29 +1,23 @@
-/* Service worker: deja la app disponible sin internet.
-   Cambia el número de VERSION cada vez que subas una versión nueva. */
-const VERSION = 'rr-v1';
-const SHELL = ['./', 'index.html', 'config.js', 'sync.js', 'manifest.webmanifest',
-  'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png',
-  'assets/fonts/Fredoka-Medium.ttf', 'assets/fonts/Fredoka-Bold.ttf',
-  'assets/fonts/Creepster-Regular.ttf', 'assets/fonts/Caveat-SemiBold.ttf',
-  'assets/recuerdo1.jpg', 'assets/recuerdo2.jpg', 'assets/recuerdo3.jpg',
-  'assets/recuerdo4.jpg', 'assets/recuerdo5.jpg', 'assets/final.jpg'];
-
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(VERSION)
-    .then(c => Promise.all(SHELL.map(u => c.add(u).catch(() => 0))))   // los que no existan se ignoran
-    .then(() => self.skipWaiting()));
-});
-self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys()
-    .then(ks => Promise.all(ks.filter(k => k !== VERSION).map(k => caches.delete(k))))
-    .then(() => self.clients.claim()));
-});
-self.addEventListener('fetch', e => {
-  const r = e.request;
-  if (r.method !== 'GET') return;
-  if (new URL(r.url).origin !== location.origin) return;          // Supabase y demás: directo a internet
-  e.respondWith(fetch(r).then(res => {                              // primero internet, si no hay: lo guardado
-    if (res.ok) { const copy = res.clone(); caches.open(VERSION).then(c => c.put(r, copy)); }
-    return res;
-  }).catch(() => caches.match(r, { ignoreSearch: true }).then(m => m || caches.match('index.html'))));
+/* Service worker "red primero": siempre intenta bajar la versión más nueva y solo usa la copia guardada si no hay internet.
+   Sube V (rr-v4, rr-v5…) cuando quieras forzar que todos los teléfonos descarten lo viejo. */
+const V='rr-v3';
+self.addEventListener('install',()=>self.skipWaiting());
+self.addEventListener('activate',e=>e.waitUntil((async()=>{
+  for(const k of await caches.keys())if(k!==V)await caches.delete(k);
+  await self.clients.claim();
+})()));
+self.addEventListener('fetch',e=>{
+  const r=e.request;
+  if(r.method!=='GET')return;
+  const u=new URL(r.url);
+  if(u.origin!==location.origin)return;            // Supabase y otros dominios: sin tocar
+  e.respondWith((async()=>{
+    try{
+      const n=await fetch(r.mode==='navigate'?r:new Request(r,{cache:'no-store'}));
+      if(n&&n.status===200){try{(await caches.open(V)).put(r,n.clone())}catch(_){}}
+      return n;
+    }catch(_){
+      return (await caches.match(r,{ignoreSearch:true}))||(r.mode==='navigate'&&await caches.match('index.html'))||Response.error();
+    }
+  })());
 });
